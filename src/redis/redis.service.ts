@@ -25,12 +25,14 @@ export class RedisService {
   try {
 
    const data = await this.cacheManager.get(key);
-   this.logger.log(`Obteniendo de caché: ${key} -> ${JSON.stringify(data)}`);
+   this.logger.log(`Obteniendo de caché: ${key} -> ${data}`);
    return data;
 
   } catch (error) {
+
    this.logger.error(`Error obteniendo de caché: ${error.message}`);
    return null;
+
   }
  }
 
@@ -38,7 +40,7 @@ export class RedisService {
   try {
    if (Array.isArray(keys)) {
 
-    await Promise.all(keys.map((key) => this.cacheManager.del(key)));
+    await Promise.all(keys.map((key: string) => this.cacheManager.del(key)));
     this.logger.log(`Eliminadas claves de caché: ${keys.join(', ')}`);
 
    } else {

@@ -5,7 +5,9 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { RpcCustomExceptionFilter } from './common/exceptions/rpc-custom-exception.filter';
 
 async function bootstrap() {
-  const logger = new Logger('Main-Gateway')
+  const logger = new Logger('Main-Gateway');
+
+  console.log('Hola Mundo')
 
   const app = await NestFactory.create(AppModule);
 

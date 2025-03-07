@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Query, ParseUUIDPipe } from 
 import { CreateOrderDto, OrderPaginationDto, StatusDto } from './dto';
 import { PaginationDto } from 'src/common';
 import { OrdersService } from './orders.service';
+import { RpcException } from '@nestjs/microservices';
 
 @Controller('orders')
 export class OrdersController {
@@ -11,23 +12,32 @@ export class OrdersController {
 
   @Post()
   async createOrder(@Body() createOrderDto: CreateOrderDto) {
-
-    return await this.ordersService.createOrder(createOrderDto);
-
+    try {
+      const order = await this.ordersService.createOrder(createOrderDto);
+      return order;
+    } catch (err) {
+      throw new RpcException(err);
+    }
   }
 
   @Get()
   async findAllOrders(@Query() orderPaginationDto: OrderPaginationDto) {
-
-    return await this.ordersService.findAllOrders(orderPaginationDto);
-
+    try {
+      const orders = await this.ordersService.findAllOrders(orderPaginationDto);
+      return orders;
+    } catch (err) {
+      throw new RpcException(err)
+    }
   }
 
   @Get('id/:id')
   async findOneOrder(@Param('id', ParseUUIDPipe) id: string) {
-
-    return await this.ordersService.findOneOrder(id);
-
+    try {
+      const order = await this.ordersService.findOneOrder(id);
+      return order;
+    } catch (err) {
+      throw new RpcException(err);
+    }
   }
 
   @Get(':status')
@@ -35,15 +45,21 @@ export class OrdersController {
     @Param() statusDto: StatusDto,
     @Query() paginationDto: PaginationDto
   ) {
-
-    return await this.ordersService.findAllByStatus(statusDto, paginationDto);
-
+    try {
+      const orders = await this.ordersService.findAllByStatus(statusDto, paginationDto);
+      return orders;
+    } catch (err) {
+      throw new RpcException(err);
+    }
   }
 
   @Patch(':id')
   async changeOrderStatus(@Param('id', ParseUUIDPipe) id: string, @Body() statusDto: StatusDto) {
-
-    return await this.ordersService.changeOrderStatus(id, statusDto);
-
+    try {
+      const order = await this.ordersService.changeOrderStatus(id, statusDto);
+      return order;
+    } catch (err) {
+      throw new RpcException(err)
+    }
   }
 }
