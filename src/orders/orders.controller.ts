@@ -36,7 +36,7 @@ export class OrdersController {
       const order = await this.ordersService.findOneOrder(id);
       return order;
     } catch (err) {
-      throw new RpcException(err);
+      throw err;
     }
   }
 

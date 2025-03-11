@@ -17,9 +17,9 @@ export class OrdersService {
  async createOrder(createOrderDto: CreateOrderDto) {
   try {
    const newOrder = await firstValueFrom(
-    this.client.send({ cmd: 'create_order' }, createOrderDto)
+    this.client.send('createOrder', createOrderDto)
    );
-   await this.redisService.deleteCache('orders:all');
+  // await this.redisService.deleteCache('orders:all');
    return newOrder;
   } catch (err) {
    throw err;
@@ -28,15 +28,15 @@ export class OrdersService {
 
  async findAllOrders(orderPaginationDto: OrderPaginationDto) {
   try {
-   const cacheKey = 'orders:all';
-   const cachedOrders = await this.redisService.get(cacheKey);
-   if (cachedOrders) {
-    return cachedOrders;
-   }
+   // const cacheKey = 'orders:all';
+   // const cachedOrders = await this.redisService.get(cacheKey);
+   // if (cachedOrders) {
+   //  return cachedOrders;
+   // }
    const orders = await firstValueFrom(
     this.client.send('findAllOrders', orderPaginationDto)
    );
-   await this.redisService.set(cacheKey, orders);
+   // await this.redisService.set(cacheKey, orders);
    return orders;
   } catch (err) {
    throw err;
@@ -45,15 +45,15 @@ export class OrdersService {
 
  async findOneOrder(id: string) {
   try {
-   const cacheKey = `orders:${id}`;
-   const cachedOrder = await this.redisService.get(cacheKey);
-   if (cachedOrder) {
-    return cachedOrder;
-   }
+   // const cacheKey = `orders:${id}`;
+   // const cachedOrder = await this.redisService.get(cacheKey);
+   // if (cachedOrder) {
+   //  return cachedOrder;
+   // }
    const order = await firstValueFrom(
     this.client.send('findOneOrder', { id })
    );
-   await this.redisService.set(cacheKey, order, 300);
+   // await this.redisService.set(cacheKey, order, 300);
    return order;
   } catch (err) {
    throw err;
@@ -78,7 +78,7 @@ export class OrdersService {
    const order = firstValueFrom(
     this.client.send('changeOrderStatus', { id, status: statusDto.status })
    )
-   await this.redisService.deleteCache(['orders:all', `orders:${id}`]);
+  // await this.redisService.deleteCache(['orders:all', `orders:${id}`]);
    return order;
   } catch (err) {
    throw err;
