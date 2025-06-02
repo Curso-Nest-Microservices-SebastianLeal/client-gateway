@@ -3,7 +3,7 @@ import { ClientProxy } from "@nestjs/microservices";
 import { CreateOrderDto, OrderPaginationDto, StatusDto } from "./dto";
 import { firstValueFrom } from "rxjs";
 import { PaginationDto } from "src/common";
-import { RedisService } from "src/redis/redis.service";
+// import { RedisService } from "src/redis/redis.service";
 import { NATS_SERVICE } from "src/config";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class OrdersService {
 
  constructor(
   @Inject(NATS_SERVICE) private readonly client: ClientProxy,
-  private readonly redisService: RedisService,
+  // private readonly redisService: RedisService,
  ) { }
 
  async createOrder(createOrderDto: CreateOrderDto) {
